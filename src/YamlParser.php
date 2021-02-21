@@ -38,7 +38,7 @@ class YamlParser implements ArrayAccess
         return isset(self::$rules[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return self::$rules[$offset] ?? null;
     }
@@ -55,18 +55,13 @@ class YamlParser implements ArrayAccess
 
     protected function loadRules(): void
     {
-        if (self::$instance->rulesPathIsValid()) {
+        if (self::rulesPathIsValid()) {
             try{
                 self::$rules  = Yaml::parseFile(self::$rulesPath);
             } catch (ParseException $exception) {
                 throw new InvalidConfigFileException($exception->getMessage());
             }
         }
-    }
-
-    public function dump()
-    {
-        var_dump(self::$rules);
     }
 
     protected function rulesPathIsValid(): bool

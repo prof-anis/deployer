@@ -12,9 +12,7 @@ use Tobexkee\Deployer\Actions\DeployFreshApplication;
 class DeployFreshApplicationCommand extends Command
 {
     protected static $defaultName = 'deploy:fresh';
-    /**
-     * @var DeployFreshApplication
-     */
+
     private DeployFreshApplication $deployer;
 
     public function __construct(string $name = null)
@@ -23,22 +21,26 @@ class DeployFreshApplicationCommand extends Command
         $this->deployer = new DeployFreshApplication;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription("Deploy a fresh application to cpanel")
             ->setHelp("The command deploys a fresh command to cpanel");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln("Running Fresh Application Command");
 
-        if($this->deployer->run()) {
+        if($this->deployer->run()->isSuccessful()) {
+
             $output->writeln("Running after deploy commands");
+
             if($this->deployer->runAfterDeploy()->isSuccessful()) {
+
                 $output->writeln("Deployment complete");
             }
+
             return Command::SUCCESS;
         }
 
