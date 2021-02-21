@@ -74,6 +74,7 @@ class YamlParser implements ArrayAccess
                 )
             );
         }
+
         return true;
     }
 }
